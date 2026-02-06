@@ -1,4 +1,18 @@
 import axios, { type AxiosInstance } from 'axios';
+import type {
+  GetErrorTrackingIssueParams,
+  SearchErrorTrackingIssuesParams,
+  ListMonitorsParams,
+  GetMonitorParams,
+  SearchMonitorGroupsParams,
+  ListActiveMetricsParams,
+  QueryMetricsParams,
+  ListTagConfigurationsParams,
+  GetMetricMetadataParams,
+  ListMetricTagsParams,
+  SearchLogsParams,
+  SearchRumEventsParams,
+} from './types.js';
 
 export class DatadogClient {
   private client: AxiosInstance;
@@ -17,17 +31,12 @@ export class DatadogClient {
 
   // ─── Error Tracking ───
 
-  async getErrorTrackingIssue(issueId: string) {
-    const response = await this.client.get(`/api/v2/error-tracking/issues/${issueId}`);
+  async getErrorTrackingIssue(params: GetErrorTrackingIssueParams) {
+    const response = await this.client.get(`/api/v2/error-tracking/issues/${params.issueId}`);
     return response.data;
   }
 
-  async searchErrorTrackingIssues(params: {
-    query: string;
-    from: number;
-    to: number;
-    track?: string;
-  }) {
+  async searchErrorTrackingIssues(params: SearchErrorTrackingIssuesParams) {
     const response = await this.client.post('/api/v2/error-tracking/issues/search', {
       data: {
         type: 'search_request',
@@ -44,54 +53,34 @@ export class DatadogClient {
 
   // ─── Monitors ───
 
-  async listMonitors(params: {
-    group_states?: string;
-    name?: string;
-    tags?: string;
-    monitor_tags?: string;
-    page?: number;
-    page_size?: number;
-  }) {
+  async listMonitors(params: ListMonitorsParams) {
     const response = await this.client.get('/api/v1/monitor', { params });
     return response.data;
   }
 
-  async getMonitor(monitorId: number) {
-    const response = await this.client.get(`/api/v1/monitor/${monitorId}`);
+  async getMonitor(params: GetMonitorParams) {
+    const response = await this.client.get(`/api/v1/monitor/${params.monitorId}`);
     return response.data;
   }
 
-  async searchMonitorGroups(params: {
-    query?: string;
-    page?: number;
-    per_page?: number;
-    sort?: string;
-  }) {
+  async searchMonitorGroups(params: SearchMonitorGroupsParams) {
     const response = await this.client.get('/api/v1/monitor/groups/search', { params });
     return response.data;
   }
 
   // ─── Metrics ───
 
-  async listActiveMetrics(params: { from: number; host?: string; tag_filter?: string }) {
+  async listActiveMetrics(params: ListActiveMetricsParams) {
     const response = await this.client.get('/api/v1/metrics', { params });
     return response.data;
   }
 
-  async queryMetrics(params: { from: number; to: number; query: string }) {
+  async queryMetrics(params: QueryMetricsParams) {
     const response = await this.client.get('/api/v1/query', { params });
     return response.data;
   }
 
-  async listTagConfigurations(params: {
-    filter_configured?: boolean;
-    filter_tags_configured?: string;
-    filter_metric_type?: string;
-    filter_include_percentiles?: boolean;
-    filter_queried?: boolean;
-    filter_tags?: string;
-    window_seconds?: number;
-  }) {
+  async listTagConfigurations(params: ListTagConfigurationsParams) {
     const queryParams: Record<string, string | number | boolean | undefined> = {
       'filter[configured]': params.filter_configured,
       'filter[tags_configured]': params.filter_tags_configured,
@@ -105,26 +94,19 @@ export class DatadogClient {
     return response.data;
   }
 
-  async getMetricMetadata(metricName: string) {
-    const response = await this.client.get(`/api/v1/metrics/${metricName}`);
+  async getMetricMetadata(params: GetMetricMetadataParams) {
+    const response = await this.client.get(`/api/v1/metrics/${params.metricName}`);
     return response.data;
   }
 
-  async listMetricTags(metricName: string) {
-    const response = await this.client.get(`/api/v2/metrics/${metricName}/tags`);
+  async listMetricTags(params: ListMetricTagsParams) {
+    const response = await this.client.get(`/api/v2/metrics/${params.metricName}/tags`);
     return response.data;
   }
 
   // ─── Logs ───
 
-  async searchLogs(params: {
-    filter_query?: string;
-    filter_from?: string;
-    filter_to?: string;
-    sort?: string;
-    page_limit?: number;
-    page_cursor?: string;
-  }) {
+  async searchLogs(params: SearchLogsParams) {
     const response = await this.client.post('/api/v2/logs/events/search', {
       filter: {
         query: params.filter_query || '*',
@@ -142,14 +124,7 @@ export class DatadogClient {
 
   // ─── RUM ───
 
-  async searchRumEvents(params: {
-    filter_query?: string;
-    filter_from?: string;
-    filter_to?: string;
-    sort?: string;
-    page_limit?: number;
-    page_cursor?: string;
-  }) {
+  async searchRumEvents(params: SearchRumEventsParams) {
     const response = await this.client.post('/api/v2/rum/events/search', {
       filter: {
         query: params.filter_query || '*',

@@ -12,7 +12,7 @@ export const registerErrorTrackingTools: ToolRegistrar = (server: McpServer, cli
     },
     async ({ issue_id }) => {
       try {
-        const result = await client.getErrorTrackingIssue(issue_id);
+        const result = await client.getErrorTrackingIssue({ issueId: issue_id });
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
       } catch (error: unknown) {
         return { content: [{ type: 'text', text: formatError(error) }], isError: true };

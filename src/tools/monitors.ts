@@ -33,7 +33,7 @@ export const registerMonitorTools: ToolRegistrar = (server: McpServer, client: D
     },
     async ({ monitor_id }) => {
       try {
-        const result = await client.getMonitor(monitor_id);
+        const result = await client.getMonitor({ monitorId: monitor_id });
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
       } catch (error: unknown) {
         return { content: [{ type: 'text', text: formatError(error) }], isError: true };

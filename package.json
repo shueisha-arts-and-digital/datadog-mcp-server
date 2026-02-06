@@ -8,8 +8,10 @@
     "datadog-mcp-server": "build/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "check-engines": "npx check-node-version --node '>=20.0.0' --npm '>=10.0.0'",
+    "preprepare": "npm run check-engines",
     "prepare": "npm run build",
+    "build": "tsc",
     "start": "node build/index.js",
     "test": "vitest run"
   },
@@ -24,7 +26,12 @@
     "@types/node": "^20.0.0",
     "vitest": "^4.0.18"
   },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
   "volta": {
-    "node": "20.19.5"
+    "node": "20.19.5",
+    "npm": "10.9.2"
   }
 }

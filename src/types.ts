@@ -2,6 +2,95 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
 export type ToolRegistrar = (server: McpServer, client: import('./client.js').DatadogClient) => void;
 
+// ─── Error Tracking ───
+
+export interface GetErrorTrackingIssueParams {
+  issueId: string;
+}
+
+export interface SearchErrorTrackingIssuesParams {
+  query: string;
+  from: number;
+  to: number;
+  track?: string;
+}
+
+// ─── Monitors ───
+
+export interface ListMonitorsParams {
+  group_states?: string;
+  name?: string;
+  tags?: string;
+  monitor_tags?: string;
+  page?: number;
+  page_size?: number;
+}
+
+export interface GetMonitorParams {
+  monitorId: number;
+}
+
+export interface SearchMonitorGroupsParams {
+  query?: string;
+  page?: number;
+  per_page?: number;
+  sort?: string;
+}
+
+// ─── Metrics ───
+
+export interface ListActiveMetricsParams {
+  from: number;
+  host?: string;
+  tag_filter?: string;
+}
+
+export interface QueryMetricsParams {
+  from: number;
+  to: number;
+  query: string;
+}
+
+export interface ListTagConfigurationsParams {
+  filter_configured?: boolean;
+  filter_tags_configured?: string;
+  filter_metric_type?: string;
+  filter_include_percentiles?: boolean;
+  filter_queried?: boolean;
+  filter_tags?: string;
+  window_seconds?: number;
+}
+
+export interface GetMetricMetadataParams {
+  metricName: string;
+}
+
+export interface ListMetricTagsParams {
+  metricName: string;
+}
+
+// ─── Logs ───
+
+export interface SearchLogsParams {
+  filter_query?: string;
+  filter_from?: string;
+  filter_to?: string;
+  sort?: string;
+  page_limit?: number;
+  page_cursor?: string;
+}
+
+// ─── RUM ───
+
+export interface SearchRumEventsParams {
+  filter_query?: string;
+  filter_from?: string;
+  filter_to?: string;
+  sort?: string;
+  page_limit?: number;
+  page_cursor?: string;
+}
+
 export interface ToolDefinition {
   name: string;
   category: string;

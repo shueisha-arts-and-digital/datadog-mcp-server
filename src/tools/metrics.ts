@@ -70,7 +70,7 @@ export const registerMetricTools: ToolRegistrar = (server: McpServer, client: Da
     },
     async ({ metric_name }) => {
       try {
-        const result = await client.getMetricMetadata(metric_name);
+        const result = await client.getMetricMetadata({ metricName: metric_name });
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
       } catch (error: unknown) {
         return { content: [{ type: 'text', text: formatError(error) }], isError: true };
@@ -86,7 +86,7 @@ export const registerMetricTools: ToolRegistrar = (server: McpServer, client: Da
     },
     async ({ metric_name }) => {
       try {
-        const result = await client.listMetricTags(metric_name);
+        const result = await client.listMetricTags({ metricName: metric_name });
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
       } catch (error: unknown) {
         return { content: [{ type: 'text', text: formatError(error) }], isError: true };
