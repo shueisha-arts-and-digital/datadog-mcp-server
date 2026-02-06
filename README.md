@@ -10,8 +10,8 @@ Progressive Disclosure パターンにより、LLM が必要なツールを効�
 
 | 変数 | 必須 | 説明 |
 |------|------|------|
-| `DD_API_KEY` | Yes | Datadog API Key |
-| `DD_APP_KEY` | Yes | Datadog Application Key |
+| `DD_API_KEY` | Yes | Datadog API Key : https://app.datadoghq.com/organization-settings/api-keys |
+| `DD_APP_KEY` | Yes | Datadog Application Key : https://app.datadoghq.com/organization-settings/application-keys |
 | `DD_SITE` | No | Datadog サイト（デフォルト: `datadoghq.com`） |
 
 ### Claude Code での設定
@@ -23,7 +23,7 @@ Progressive Disclosure パターンにより、LLM が必要なツールを効�
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["-y", "github:<owner>/datadog-mcp-server"],
+      "args": ["-y", "https://github.com/shueisha-arts-and-digital/datadog-mcp-server"],
       "env": {
         "DD_API_KEY": "your-api-key",
         "DD_APP_KEY": "your-app-key",
