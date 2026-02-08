@@ -27,7 +27,7 @@ describe('Error Tracking - Client', () => {
     it('issue_id がパスに埋め込まれる', async () => {
       mock.get.mockResolvedValue({ data: { data: { id: 'abc-123', attributes: {} } } });
 
-      const result = await client.getErrorTrackingIssue('abc-123');
+      const result = await client.getErrorTrackingIssue({ issueId: 'abc-123' });
 
       expect(mock.get).toHaveBeenCalledWith('/api/v2/error-tracking/issues/abc-123');
       expect(result.data.id).toBe('abc-123');
@@ -87,7 +87,7 @@ describe('Error Tracking - Client', () => {
       apiError.response = { status: 403, statusText: 'Forbidden', data: { errors: ['Forbidden'] } };
       mock.get.mockRejectedValue(apiError);
 
-      await expect(client.getErrorTrackingIssue('abc')).rejects.toThrow('Request failed');
+      await expect(client.getErrorTrackingIssue({ issueId: 'abc' })).rejects.toThrow('Request failed');
     });
 
     it('ネットワークエラー時に例外が伝播する', async () => {

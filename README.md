@@ -91,9 +91,9 @@ LLM がツールを発見するための Progressive Disclosure ツール。
 |---------|-----|------|
 | `datadog_list_active_metrics` | `GET /api/v1/metrics` | アクティブなメトリクス名の一覧取得 |
 | `datadog_query_metrics` | `GET /api/v1/query` | 時系列メトリクスデータのクエリ |
-| `datadog_list_tag_configurations` | `GET /api/v2/metrics` | メトリクスのタグ設定メタデータ検索 |
 | `datadog_get_metric_metadata` | `GET /api/v1/metrics/{metric_name}` | 特定メトリクスのメタデータ取得 |
-| `datadog_list_metric_tags` | `GET /api/v2/metrics/{metric_name}/tags` | 特定メトリクスのタグ設定一覧 |
+| `datadog_list_all_metric_tags` | `GET /api/v2/metrics/{metric_name}/all-tags` | 特定メトリクスの全タグ一覧（ingested タグ含む） |
+| `datadog_search_metrics` | `GET /api/v1/search` | メトリクス名のプレフィックス検索 |
 
 ### Logs（1ツール）
 
