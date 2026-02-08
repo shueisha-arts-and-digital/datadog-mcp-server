@@ -7,9 +7,9 @@ import type {
   SearchMonitorGroupsParams,
   ListActiveMetricsParams,
   QueryMetricsParams,
-  ListTagConfigurationsParams,
   GetMetricMetadataParams,
-  ListMetricTagsParams,
+  ListAllMetricTagsParams,
+  SearchMetricsParams,
   SearchLogsParams,
   SearchRumEventsParams,
 } from './types.js';
@@ -80,27 +80,23 @@ export class DatadogClient {
     return response.data;
   }
 
-  async listTagConfigurations(params: ListTagConfigurationsParams) {
-    const queryParams: Record<string, string | number | boolean | undefined> = {
-      'filter[configured]': params.filter_configured,
-      'filter[tags_configured]': params.filter_tags_configured,
-      'filter[metric_type]': params.filter_metric_type,
-      'filter[include_percentiles]': params.filter_include_percentiles,
-      'filter[queried]': params.filter_queried,
-      'filter[tags]': params.filter_tags,
-      'window[seconds]': params.window_seconds,
-    };
-    const response = await this.client.get('/api/v2/metrics', { params: queryParams });
-    return response.data;
-  }
-
   async getMetricMetadata(params: GetMetricMetadataParams) {
     const response = await this.client.get(`/api/v1/metrics/${params.metricName}`);
     return response.data;
   }
 
-  async listMetricTags(params: ListMetricTagsParams) {
-    const response = await this.client.get(`/api/v2/metrics/${params.metricName}/tags`);
+  async listAllMetricTags(params: ListAllMetricTagsParams) {
+    const queryParams: Record<string, string | number | boolean | undefined> = {};
+    if (params.windowSeconds !== undefined) {
+      queryParams['window[seconds]'] = params.windowSeconds;
+    }
+    const response = await this.client.get(`/api/v2/metrics/${params.metricName}/all-tags`, { params: queryParams });
+    return response.data;
+  }
+
+  async searchMetrics(params: SearchMetricsParams) {
+    const query = params.query.startsWith('metrics:') ? params.query : `metrics:${params.query}`;
+    const response = await this.client.get('/api/v1/search', { params: { q: query } });
     return response.data;
   }
 
