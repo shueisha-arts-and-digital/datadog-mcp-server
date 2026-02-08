@@ -37,8 +37,8 @@ const TOOL_NAMES = [
   'datadog_list_tool_categories', 'datadog_search_tools',
   'datadog_get_error_tracking_issue', 'datadog_search_error_tracking_issues',
   'datadog_list_monitors', 'datadog_get_monitor', 'datadog_search_monitor_groups',
-  'datadog_list_active_metrics', 'datadog_query_metrics', 'datadog_list_tag_configurations',
-  'datadog_get_metric_metadata', 'datadog_list_metric_tags',
+  'datadog_list_active_metrics', 'datadog_query_metrics',
+  'datadog_get_metric_metadata', 'datadog_list_all_metric_tags', 'datadog_search_metrics',
   'datadog_search_logs',
   'datadog_search_rum_events',
 ];

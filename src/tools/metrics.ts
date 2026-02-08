@@ -41,28 +41,6 @@ export const registerMetricTools: ToolRegistrar = (server: McpServer, client: Da
   );
 
   server.tool(
-    'datadog_list_tag_configurations',
-    'List metrics with tag configurations. Returns metric names and their tag configuration metadata.',
-    {
-      filter_configured: z.boolean().optional().describe('Filter on metrics that have configured tags'),
-      filter_tags_configured: z.string().optional().describe('Filter tag configurations by configured/actively_queried state'),
-      filter_metric_type: z.string().optional().describe('Filter by metric type (gauge, count, rate, distribution)'),
-      filter_include_percentiles: z.boolean().optional().describe('Filter by whether percentiles are included'),
-      filter_queried: z.boolean().optional().describe('Filter on actively queried metrics'),
-      filter_tags: z.string().optional().describe('Filter by tag key-value pair'),
-      window_seconds: z.number().optional().describe('Time window in seconds for query activity (default: 3600)'),
-    },
-    async (params) => {
-      try {
-        const result = await client.listTagConfigurations(params);
-        return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
-      } catch (error: unknown) {
-        return { content: [{ type: 'text', text: formatError(error) }], isError: true };
-      }
-    }
-  );
-
-  server.tool(
     'datadog_get_metric_metadata',
     'Get metadata for a specific metric by name. Returns type, description, unit, and other metadata.',
     {
@@ -79,14 +57,31 @@ export const registerMetricTools: ToolRegistrar = (server: McpServer, client: Da
   );
 
   server.tool(
-    'datadog_list_metric_tags',
-    'List tag configurations for a specific metric. Shows which tags are queryable.',
+    'datadog_list_all_metric_tags',
+    'List all tags for a specific metric, including ingested tags. Returns both queryable and ingested tag lists.',
     {
       metric_name: z.string().describe('The name of the metric (e.g., "system.cpu.user")'),
+      window_seconds: z.number().optional().describe('Time window in seconds for tag activity (default: 14400)'),
     },
-    async ({ metric_name }) => {
+    async ({ metric_name, window_seconds }) => {
       try {
-        const result = await client.listMetricTags({ metricName: metric_name });
+        const result = await client.listAllMetricTags({ metricName: metric_name, windowSeconds: window_seconds });
+        return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+      } catch (error: unknown) {
+        return { content: [{ type: 'text', text: formatError(error) }], isError: true };
+      }
+    }
+  );
+
+  server.tool(
+    'datadog_search_metrics',
+    'Search for metric names matching a query prefix. Returns a list of matching metric names. Note: This uses the deprecated v1 search API.',
+    {
+      q: z.string().describe('Search query for metrics (e.g., "system.cpu"). The "metrics:" prefix is added automatically if not present.'),
+    },
+    async ({ q }) => {
+      try {
+        const result = await client.searchMetrics({ query: q });
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
       } catch (error: unknown) {
         return { content: [{ type: 'text', text: formatError(error) }], isError: true };

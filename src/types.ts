@@ -51,22 +51,17 @@ export interface QueryMetricsParams {
   query: string;
 }
 
-export interface ListTagConfigurationsParams {
-  filter_configured?: boolean;
-  filter_tags_configured?: string;
-  filter_metric_type?: string;
-  filter_include_percentiles?: boolean;
-  filter_queried?: boolean;
-  filter_tags?: string;
-  window_seconds?: number;
-}
-
 export interface GetMetricMetadataParams {
   metricName: string;
 }
 
-export interface ListMetricTagsParams {
+export interface ListAllMetricTagsParams {
   metricName: string;
+  windowSeconds?: number;
+}
+
+export interface SearchMetricsParams {
+  query: string;
 }
 
 // ─── Logs ───
@@ -133,9 +128,9 @@ export const TOOL_REGISTRY: ToolDefinition[] = [
   // Metrics
   { name: 'datadog_list_active_metrics', category: 'metrics', description: 'List active metrics since a given time', apiMethod: 'GET', apiPath: '/api/v1/metrics' },
   { name: 'datadog_query_metrics', category: 'metrics', description: 'Query timeseries metric data points', apiMethod: 'GET', apiPath: '/api/v1/query' },
-  { name: 'datadog_list_tag_configurations', category: 'metrics', description: 'List metrics with tag configurations', apiMethod: 'GET', apiPath: '/api/v2/metrics' },
   { name: 'datadog_get_metric_metadata', category: 'metrics', description: 'Get metadata for a specific metric by name', apiMethod: 'GET', apiPath: '/api/v1/metrics/{metric_name}' },
-  { name: 'datadog_list_metric_tags', category: 'metrics', description: 'List tag configurations for a specific metric', apiMethod: 'GET', apiPath: '/api/v2/metrics/{metric_name}/tags' },
+  { name: 'datadog_list_all_metric_tags', category: 'metrics', description: 'List all tags for a specific metric including ingested tags', apiMethod: 'GET', apiPath: '/api/v2/metrics/{metric_name}/all-tags' },
+  { name: 'datadog_search_metrics', category: 'metrics', description: 'Search metric names by query prefix', apiMethod: 'GET', apiPath: '/api/v1/search' },
   // Logs
   { name: 'datadog_search_logs', category: 'logs', description: 'Search log events with query filters and time range', apiMethod: 'POST', apiPath: '/api/v2/logs/events/search' },
   // RUM
